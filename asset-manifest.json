@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/js-playground-for-codegolf/static/js/main.b62a519b.chunk.js",
+    "main.js.map": "/js-playground-for-codegolf/static/js/main.b62a519b.chunk.js.map",
+    "runtime-main.js": "/js-playground-for-codegolf/static/js/runtime-main.099ffe66.js",
+    "runtime-main.js.map": "/js-playground-for-codegolf/static/js/runtime-main.099ffe66.js.map",
+    "static/js/2.8e9837c4.chunk.js": "/js-playground-for-codegolf/static/js/2.8e9837c4.chunk.js",
+    "static/js/2.8e9837c4.chunk.js.map": "/js-playground-for-codegolf/static/js/2.8e9837c4.chunk.js.map",
+    "index.html": "/js-playground-for-codegolf/index.html",
+    "precache-manifest.d918a64ba00f6bc42046ffbf0b1b726a.js": "/js-playground-for-codegolf/precache-manifest.d918a64ba00f6bc42046ffbf0b1b726a.js",
+    "service-worker.js": "/js-playground-for-codegolf/service-worker.js",
+    "static/js/2.8e9837c4.chunk.js.LICENSE.txt": "/js-playground-for-codegolf/static/js/2.8e9837c4.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.099ffe66.js",
+    "static/js/2.8e9837c4.chunk.js",
+    "static/js/main.b62a519b.chunk.js"
+  ]
+}
