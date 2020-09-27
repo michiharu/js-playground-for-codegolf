@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "dfe048bc2adf2cff451bf73ba00516fe",
+    "revision": "5e3e5d6e15ca7300efb077e789ae1069",
     "url": "/js-playground-for-codegolf/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/js-playground-for-codegolf/static/js/2.8e9837c4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2b301430bd6eeca22203",
-    "url": "/js-playground-for-codegolf/static/js/main.79c9ba88.chunk.js"
+    "revision": "afc62e47ba1084898074",
+    "url": "/js-playground-for-codegolf/static/js/main.e511df20.chunk.js"
   },
   {
     "revision": "b7fc578ca824206fa1d0",
