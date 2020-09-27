@@ -26,7 +26,7 @@ export function getByteLen(s: string): number {
 export function isValidCode(code: string): boolean {
   try {
     // eslint-disable-next-line
-    Function(code);
+    Function(code)();
     return true;
   } catch (error) {
     return false;
