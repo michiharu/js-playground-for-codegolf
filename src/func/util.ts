@@ -1,13 +1,10 @@
 import { initialCode } from "./code";
 
 export function viewCode(): string {
-  console.log(initialCode.toString().replace(" ////", "\n  ////").split("\n"));
   return initialCode
     .toString()
-    .replace(" ////", "\n  ////")
     .split("\n")
     .filter((_, i, arr) => i !== 0 && i !== arr.length - 1)
-    .filter((line) => line.length !== 0)
     .map((line) => line.slice(2))
     .join("\n");
 }
