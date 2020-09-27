@@ -2,7 +2,6 @@ import { initialCode } from "./code";
 
 export function viewCode(): string {
   return initialCode
-    .toString()
     .split("\n")
     .filter((_, i, arr) => i !== 0 && i !== arr.length - 1)
     .map((line) => line.slice(2))

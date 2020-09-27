@@ -1,4 +1,4 @@
-export function initialCode() {
+export const initialCode = `function initialCode() {
   var res = "";
   var w = 60;
   var h = 30;
@@ -6,10 +6,10 @@ export function initialCode() {
     for (var x = 0; x < w; x++) {
       res += "-";
     }
-    res += "\n";
+    res += "\\n";
   }
   return res;
-}
+}`;
 
 export function originalCode() {
   // 変数の初期化
