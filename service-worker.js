@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/js-playground-for-codegolf/precache-manifest.ef5c771fa8600ccac9462aa73252839b.js"
+  "/js-playground-for-codegolf/precache-manifest.b6027b9a046efeebb1f62eb90d79d8f2.js"
 );
 
 self.addEventListener('message', (event) => {
