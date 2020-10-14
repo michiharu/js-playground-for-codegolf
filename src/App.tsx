@@ -1,132 +1,142 @@
-import React, { useState } from "react";
-import Slide from "@material-ui/core/Slide";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+
+import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import TextField from "@material-ui/core/TextField";
-import { lightGreen } from "@material-ui/core/colors";
-
-import { viewCode, isValidCode, execCode, getByteLen } from "./func/util";
-import { originalCode } from "./func/code";
 import {
   makeStyles,
+  useTheme,
   Theme,
   createStyles,
-  withStyles,
 } from "@material-ui/core/styles";
+import PlayGroundNormal from "./PlayGroundNormal";
+import LeftMenu from "./LeftMenu";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { pages } from "./routes";
+import PlayGroundTimer from "./PlayGroundTimer";
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    inputRoot: {},
-    correct: {
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-          borderColor: lightGreen.A400,
-        },
+    root: {
+      display: "flex",
+    },
+    drawer: {
+      [theme.breakpoints.up("md")]: {
+        width: drawerWidth,
+        flexShrink: 0,
       },
+    },
+    appBar: {
+      [theme.breakpoints.up("md")]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+      },
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up("md")]: {
+        display: "none",
+      },
+    },
+    // necessary for content to be below app bar
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(1),
     },
   })
 );
 
-const CssTextField = withStyles({
-  root: {
-    "& .MuiOutlinedInput-multiline": {
-      paddingBottom: 48.5,
-    },
-  },
-})(TextField);
-
 export default function App() {
   const classes = useStyles();
-  const trigger = useScrollTrigger();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const [code, setCode] = useState(viewCode());
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCode(event.target.value);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  const isValid = isValidCode(code);
-  const res = isValid ? execCode(code) : "";
-  const isCorrect = res === originalCode();
-  const len = getByteLen(code);
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
+      <LeftMenu />
+    </div>
+  );
 
   return (
-    <>
-      <Slide appear={false} direction="down" in={!trigger}>
-        <AppBar position="relative">
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              JS Playground for CodeGolf
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Slide>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            JS Playground for CodeGolf
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden mdUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Switch>
+          {pages.map((p) => (
+            <Route path={p.page}>
+              {p.type === "NORMAL" && <PlayGroundNormal page={p} />}
+              {p.type === "TIMER" && <PlayGroundTimer page={p} />}
+            </Route>
+          ))}
 
-      <main>
-        <Box p={2}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} lg={6}>
-              <div style={{ position: "relative" }}>
-                <CssTextField
-                  value={code}
-                  onChange={handleChange}
-                  rows={32}
-                  multiline
-                  fullWidth
-                  error={!isValid}
-                />
-                <Box
-                  position="absolute"
-                  width="100%"
-                  height={30}
-                  bottom={0}
-                  left={0}
-                  px={1}
-                  pt={0.5}
-                  bgcolor="lightGray"
-                  borderRadius="0 0 4px 4px"
-                  display="flex"
-                  justifyContent="flex-end"
-                >
-                  <Typography align="right">line: {len}</Typography>
-                </Box>
-              </div>
-            </Grid>
-            <Grid item xs={12} lg={6}>
-              <div style={{ position: "relative" }}>
-                <CssTextField
-                  className={isCorrect ? classes.correct : undefined}
-                  value={res}
-                  rows={32}
-                  multiline
-                  fullWidth
-                />
-                <Box
-                  position="absolute"
-                  width="100%"
-                  height={30}
-                  bottom={0}
-                  left={0}
-                  px={1}
-                  pt={0.5}
-                  bgcolor="lightGray"
-                  borderRadius="0 0 4px 4px"
-                  display="flex"
-                  justifyContent="flex-end"
-                >
-                  {isCorrect && <Typography align="right">Correct</Typography>}
-                </Box>
-              </div>
-            </Grid>
-          </Grid>
-        </Box>
+          <Redirect to={pages[0].page} />
+        </Switch>
       </main>
-    </>
+    </div>
   );
 }

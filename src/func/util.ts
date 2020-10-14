@@ -1,7 +1,5 @@
-import { initialCode } from "./code";
-
-export function viewCode(): string {
-  return initialCode
+export function viewCode(code: string): string {
+  return code
     .split("\n")
     .filter((_, i, arr) => i !== 0 && i !== arr.length - 1)
     .map((line) => line.slice(2))
@@ -23,17 +21,17 @@ export function getByteLen(s: string): number {
   return len;
 }
 
-export function isValidCode(code: string): boolean {
+export function isValidCode(code: string, arg?: any): boolean {
   try {
     // eslint-disable-next-line
-    Function(code)();
+    Function(code)(arg);
     return true;
   } catch (error) {
     return false;
   }
 }
 
-export function execCode(code: string): string {
+export function execCode(code: string, arg?: any): string {
   // eslint-disable-next-line
-  return Function(code)();
+  return Function(code)(arg);
 }
