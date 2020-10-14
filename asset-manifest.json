@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/js-playground-for-codegolf/static/js/main.d0352264.chunk.js",
-    "main.js.map": "/js-playground-for-codegolf/static/js/main.d0352264.chunk.js.map",
+    "main.js": "/js-playground-for-codegolf/static/js/main.a4a6060a.chunk.js",
+    "main.js.map": "/js-playground-for-codegolf/static/js/main.a4a6060a.chunk.js.map",
     "runtime-main.js": "/js-playground-for-codegolf/static/js/runtime-main.099ffe66.js",
     "runtime-main.js.map": "/js-playground-for-codegolf/static/js/runtime-main.099ffe66.js.map",
     "static/js/2.684c9cc3.chunk.js": "/js-playground-for-codegolf/static/js/2.684c9cc3.chunk.js",
     "static/js/2.684c9cc3.chunk.js.map": "/js-playground-for-codegolf/static/js/2.684c9cc3.chunk.js.map",
     "index.html": "/js-playground-for-codegolf/index.html",
-    "precache-manifest.b6027b9a046efeebb1f62eb90d79d8f2.js": "/js-playground-for-codegolf/precache-manifest.b6027b9a046efeebb1f62eb90d79d8f2.js",
+    "precache-manifest.1e0062ed2bbfe865ef44d319a47c286d.js": "/js-playground-for-codegolf/precache-manifest.1e0062ed2bbfe865ef44d319a47c286d.js",
     "service-worker.js": "/js-playground-for-codegolf/service-worker.js",
     "static/js/2.684c9cc3.chunk.js.LICENSE.txt": "/js-playground-for-codegolf/static/js/2.684c9cc3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.099ffe66.js",
     "static/js/2.684c9cc3.chunk.js",
-    "static/js/main.d0352264.chunk.js"
+    "static/js/main.a4a6060a.chunk.js"
   ]
 }
