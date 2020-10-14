@@ -1,6 +1,5 @@
 export const initial = `function initialCode() {
   now = arguments[0];
-  console.log(arguments)
 
   // 結果を戻して終了
   return now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
