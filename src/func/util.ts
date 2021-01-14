@@ -1,3 +1,11 @@
+import estraverse from "estraverse";
+import escodegen from "escodegen";
+import * as ESTree from "estree";
+
+import { checkTime, loopStatements } from "../const/ast";
+
+const esprima = require("esprima");
+
 export function viewCode(code: string): string {
   return code
     .split("\n")
@@ -21,12 +29,43 @@ export function getByteLen(s: string): number {
   return len;
 }
 
+function attachInfiniteLoopChecker(code: string): string {
+  const entryFunctionStatement = "function __check() {\n";
+  const startDeclaration = "__start = performance.now();\n";
+  const funcString = entryFunctionStatement + startDeclaration + code + "\n}";
+  console.log(funcString);
+
+  const ast = esprima.parseScript(funcString);
+  const attached = estraverse.replace(ast, {
+    enter(node) {
+      if (node.type === "ForStatement") {
+        const blockStatement = node.body as ESTree.BlockStatement;
+        return {
+          ...node,
+          body: {
+            ...blockStatement,
+            body: [checkTime, ...blockStatement.body],
+          },
+        };
+      }
+      return node;
+    },
+  });
+  const attachedString = escodegen
+    .generate(attached)
+    .slice(startDeclaration.length - 4, -2);
+  console.log(attachedString);
+
+  return attachedString;
+}
+
 export function isValidCode(code: string, arg?: any): boolean {
   try {
     // eslint-disable-next-line
-    Function(code)(arg);
+    Function(attachInfiniteLoopChecker(code))(arg);
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 }

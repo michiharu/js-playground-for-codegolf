@@ -128,7 +128,7 @@ export default function App() {
         <div className={classes.toolbar} />
         <Switch>
           {pages.map((p) => (
-            <Route path={p.page}>
+            <Route key={p.page} path={p.page}>
               {p.type === "NORMAL" && <PlayGroundNormal page={p} />}
               {p.type === "TIMER" && <PlayGroundTimer page={p} />}
             </Route>

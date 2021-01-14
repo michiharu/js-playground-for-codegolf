@@ -59,11 +59,13 @@ function BoxBelowTextfield(props: { children: React.ReactNode }) {
 
 type Props = {
   page: Page;
-}
+};
 
 export default function PlayGround(props: Props) {
   const classes = useStyles();
-  const { page: { init, origin }} = props;
+  const {
+    page: { init, origin },
+  } = props;
 
   const [code, setCode] = useState(viewCode(init));
 
@@ -87,6 +89,7 @@ export default function PlayGround(props: Props) {
               rows={32}
               multiline
               fullWidth
+              inputProps={{ spellCheck: "false" }}
               error={!isValid}
             />
             <BoxBelowTextfield>
