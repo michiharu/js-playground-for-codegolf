@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core/styles";
 import { lightGreen } from "@material-ui/core/colors";
 
-import { viewCode, isValidCode, execCode, getByteLen } from "./func/util";
+import { viewCode, execCode, getByteLen } from "./func/util";
 import { Page } from "./routes";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,26 +59,29 @@ function BoxBelowTextfield(props: { children: React.ReactNode }) {
 
 type Props = {
   page: Page;
-}
+};
 
-export default function PlayGroundTimer(props: Props) {
+export default function PlayGround(props: Props) {
   const classes = useStyles();
-  const { page: { init, origin }} = props;
+  const {
+    page: { init, origin },
+  } = props;
 
-  const [now, setNow] = useState(new Date())
-  useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
   const [code, setCode] = useState(viewCode(init));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCode(event.target.value);
   };
 
-  const isValid = isValidCode(code, now);
-  const res = isValid ? execCode(code, now) : "";
-  const isCorrect = res === origin(now);
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 500);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const { status, body } = execCode(code, now);
+  const isValid = status === "success";
+  const isCorrect = body === origin(now);
   const len = getByteLen(code);
 
   return (
@@ -92,6 +95,7 @@ export default function PlayGroundTimer(props: Props) {
               rows={32}
               multiline
               fullWidth
+              inputProps={{ spellCheck: "false" }}
               error={!isValid}
             />
             <BoxBelowTextfield>
@@ -103,7 +107,7 @@ export default function PlayGroundTimer(props: Props) {
           <div style={{ position: "relative" }}>
             <CssTextField
               className={isCorrect ? classes.correct : undefined}
-              value={res}
+              value={body}
               rows={32}
               multiline
               fullWidth

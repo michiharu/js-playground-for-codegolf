@@ -2,7 +2,7 @@ import estraverse from "estraverse";
 import escodegen from "escodegen";
 import * as ESTree from "estree";
 
-import { checkTime, loopStatements } from "../const/ast";
+import { checkTime } from "../const/ast";
 
 const esprima = require("esprima");
 
@@ -30,9 +30,10 @@ export function getByteLen(s: string): number {
 }
 
 function attachInfiniteLoopChecker(code: string): string {
-  const entryFunctionStatement = "function __check() {\n";
-  const startDeclaration = "__start = performance.now();\n";
-  const funcString = entryFunctionStatement + startDeclaration + code + "\n}";
+  const startFunc = "function __check() {\n";
+  const startTimeMeasurement = "const __start = performance.now();\n";
+  const endFunc = "\n}";
+  const funcString = startFunc + startTimeMeasurement + code + endFunc;
   console.log(funcString);
 
   const ast = esprima.parseScript(funcString);
@@ -44,7 +45,7 @@ function attachInfiniteLoopChecker(code: string): string {
           ...node,
           body: {
             ...blockStatement,
-            body: [checkTime, ...blockStatement.body],
+            body: [checkTime(200), ...blockStatement.body],
           },
         };
       }
@@ -52,25 +53,25 @@ function attachInfiniteLoopChecker(code: string): string {
     },
   });
   const attachedString = escodegen
-    .generate(attached)
-    .slice(startDeclaration.length - 4, -2);
+    .generate(attached, { format: { indent: { style: "  " } } })
+    .slice(startFunc.length, -endFunc.length);
   console.log(attachedString);
 
   return attachedString;
 }
 
-export function isValidCode(code: string, arg?: any): boolean {
+type ExecCodeResult = {
+  status: "success" | "error";
+  body: string;
+};
+
+export function execCode(code: string, arg?: any): ExecCodeResult {
   try {
     // eslint-disable-next-line
-    Function(attachInfiniteLoopChecker(code))(arg);
-    return true;
+    const body = Function(attachInfiniteLoopChecker(code))(arg);
+    return { status: "success", body };
   } catch (error) {
-    console.error(error);
-    return false;
+    console.error(String(error));
+    return { status: "error", body: String(error) };
   }
-}
-
-export function execCode(code: string, arg?: any): string {
-  // eslint-disable-next-line
-  return Function(code)(arg);
 }

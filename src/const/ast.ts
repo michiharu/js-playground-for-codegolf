@@ -8,47 +8,55 @@ export const loopStatements: ESTree.Node["type"][] = [
   "ForOfStatement",
 ];
 
-export const checkTime: ESTree.Statement = {
-  type: "IfStatement",
-  test: {
-    type: "BinaryExpression",
-    operator: ">",
-    left: {
+export const checkTime = (milliseconds: number): ESTree.Statement => {
+  const sec = (milliseconds / 1000).toFixed(2);
+  const timeLimitErrorMsg = `TimeLimitError: The execution time has exceeded ${sec} seconds.`;
+  return {
+    type: "IfStatement",
+    test: {
       type: "BinaryExpression",
-      operator: "-",
+      operator: ">",
       left: {
-        type: "CallExpression",
-        callee: {
-          type: "MemberExpression",
-          computed: false,
-          object: { type: "Identifier", name: "performance" },
-          property: { type: "Identifier", name: "now" },
-          optional: false,
-        },
-        arguments: [],
-        optional: false,
-      },
-      right: { type: "Identifier", name: "__start" },
-    },
-    right: { type: "Literal", value: 100, raw: "100" },
-  },
-  consequent: {
-    type: "BlockStatement",
-    body: [
-      {
-        type: "ThrowStatement",
-        argument: {
+        type: "BinaryExpression",
+        operator: "-",
+        left: {
           type: "CallExpression",
-          callee: { type: "Identifier", name: "Error" },
-          arguments: [
-            { type: "Literal", value: "InfiniteLoop", raw: '"InfiniteLoop"' },
-          ],
+          callee: {
+            type: "MemberExpression",
+            computed: false,
+            object: { type: "Identifier", name: "performance" },
+            property: { type: "Identifier", name: "now" },
+            optional: false,
+          },
+          arguments: [],
           optional: false,
         },
+        right: { type: "Identifier", name: "__start" },
       },
-    ],
-  },
-  alternate: null,
+      right: { type: "Literal", value: milliseconds, raw: `${milliseconds}` },
+    },
+    consequent: {
+      type: "BlockStatement",
+      body: [
+        {
+          type: "ThrowStatement",
+          argument: {
+            type: "CallExpression",
+            callee: { type: "Identifier", name: "Error" },
+            arguments: [
+              {
+                type: "Literal",
+                value: timeLimitErrorMsg,
+                raw: `"${timeLimitErrorMsg}"`,
+              },
+            ],
+            optional: false,
+          },
+        },
+      ],
+    },
+    alternate: null,
+  };
 };
 
 export default { checkTime };

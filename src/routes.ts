@@ -6,13 +6,11 @@ import * as CircleCode from "./codes/circle-code";
 import * as DigitalClock from "./codes/digital-clock-code";
 
 export type PageName = "/円を描こう" | "/デジタル時計を描こう";
-export type PlayGroundType = "NORMAL" | "TIMER";
 
 export type Page = {
   page: PageName;
   label: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
-  type: PlayGroundType;
   init: string;
   origin: Function;
 };
@@ -21,7 +19,6 @@ export const pages: Page[] = [
   {
     page: "/円を描こう",
     label: "円を描こう",
-    type: "NORMAL",
     icon: CircleIcon,
     init: CircleCode.initial,
     origin: CircleCode.original,
@@ -29,7 +26,6 @@ export const pages: Page[] = [
   {
     page: "/デジタル時計を描こう",
     label: "デジタル時計",
-    type: "TIMER",
     icon: DigitalClockIcon,
     init: DigitalClock.initial,
     origin: DigitalClock.original,

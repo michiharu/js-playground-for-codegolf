@@ -15,11 +15,10 @@ import {
   Theme,
   createStyles,
 } from "@material-ui/core/styles";
-import PlayGroundNormal from "./PlayGroundNormal";
+import PlayGround from "./PlayGround";
 import LeftMenu from "./LeftMenu";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { pages } from "./routes";
-import PlayGroundTimer from "./PlayGroundTimer";
 
 const drawerWidth = 240;
 
@@ -129,8 +128,7 @@ export default function App() {
         <Switch>
           {pages.map((p) => (
             <Route key={p.page} path={p.page}>
-              {p.type === "NORMAL" && <PlayGroundNormal page={p} />}
-              {p.type === "TIMER" && <PlayGroundTimer page={p} />}
+              <PlayGround page={p} />
             </Route>
           ))}
 
