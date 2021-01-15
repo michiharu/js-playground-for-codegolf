@@ -15,6 +15,7 @@ import { lightGreen } from "@material-ui/core/colors";
 
 import { viewCode, execCode, getByteLen } from "./func/util";
 import { Page } from "./routes";
+import { Checkbox, FormControlLabel, Grow } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,31 +62,96 @@ type Props = {
   page: Page;
 };
 
+type PlayGroundSettings = {
+  fps: number | "Disable time refresh";
+  timeLimit: number;
+};
+
+const defaultPlayGroundSettings: PlayGroundSettings = {
+  fps: 10,
+  timeLimit: 200,
+};
+
 export default function PlayGround(props: Props) {
   const classes = useStyles();
   const {
     page: { init, origin },
   } = props;
 
+  const [{ fps, timeLimit }, setSettings] = useState(defaultPlayGroundSettings);
+
   const [code, setCode] = useState(viewCode(init));
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCode(event.target.value);
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCode(e.target.value);
 
-  const [now, setNow] = useState(new Date());
+  const [, setNow] = useState(new Date());
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 500);
-    return () => window.clearInterval(timer);
-  }, []);
+    fps !== "Disable time refresh" && console.log(1000 / fps);
+    const timer =
+      fps !== "Disable time refresh"
+        ? window.setInterval(() => setNow(new Date()), 1000 / fps)
+        : -1;
+    return () => {
+      if (timer !== -1) {
+        window.clearInterval(timer);
+      }
+    };
+  }, [fps]);
 
-  const { status, body } = execCode(code, now);
+  const { status, body } = execCode(code, [], { timeLimit });
   const isValid = status === "success";
-  const isCorrect = body === origin(now);
+  const isCorrect = body === origin();
   const len = getByteLen(code);
+
+  const checkbox = (
+    <Checkbox
+      checked={fps === "Disable time refresh"}
+      onChange={(e, checked) =>
+        setSettings({
+          fps: checked ? "Disable time refresh" : defaultPlayGroundSettings.fps,
+          timeLimit,
+        })
+      }
+      name="checkedA"
+    />
+  );
 
   return (
     <Box p={2}>
+      <Box display="flex" flexDirection="row" mb={2}>
+        <Box>
+          <TextField
+            label="Time Limit"
+            type="number"
+            variant="standard"
+            style={{ width: 100 }}
+            inputProps={{ style: { textAlign: "right" } }}
+            value={timeLimit}
+            onChange={(e) =>
+              setSettings({ fps, timeLimit: Number(e.target.value) })
+            }
+          />
+        </Box>
+        <Box ml={5}>
+          <FormControlLabel control={checkbox} label="Disable time refresh" />
+        </Box>
+        <Grow in={fps !== "Disable time refresh"}>
+          <Box ml={1}>
+            <TextField
+              label="FPS"
+              type="number"
+              variant="standard"
+              style={{ width: 100 }}
+              inputProps={{ style: { textAlign: "right" } }}
+              value={fps}
+              onChange={(e) =>
+                setSettings({ fps: Number(e.target.value), timeLimit })
+              }
+            />
+          </Box>
+        </Grow>
+      </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={6}>
           <div style={{ position: "relative" }}>

@@ -29,12 +29,12 @@ export function getByteLen(s: string): number {
   return len;
 }
 
-function attachInfiniteLoopChecker(code: string): string {
+function attachInfiniteLoopChecker(code: string, timeLimit: number): string {
   const startFunc = "function __check() {\n";
   const startTimeMeasurement = "const __start = performance.now();\n";
   const endFunc = "\n}";
   const funcString = startFunc + startTimeMeasurement + code + endFunc;
-  console.log(funcString);
+  // console.log(funcString);
 
   const ast = esprima.parseScript(funcString);
   const attached = estraverse.replace(ast, {
@@ -45,7 +45,7 @@ function attachInfiniteLoopChecker(code: string): string {
           ...node,
           body: {
             ...blockStatement,
-            body: [checkTime(200), ...blockStatement.body],
+            body: [checkTime(timeLimit), ...blockStatement.body],
           },
         };
       }
@@ -55,7 +55,7 @@ function attachInfiniteLoopChecker(code: string): string {
   const attachedString = escodegen
     .generate(attached, { format: { indent: { style: "  " } } })
     .slice(startFunc.length, -endFunc.length);
-  console.log(attachedString);
+  // console.log(attachedString);
 
   return attachedString;
 }
@@ -65,10 +65,19 @@ type ExecCodeResult = {
   body: string;
 };
 
-export function execCode(code: string, arg?: any): ExecCodeResult {
+type ExecCodeOptions = {
+  timeLimit: number;
+};
+
+export function execCode(
+  code: string,
+  args: any[],
+  options: ExecCodeOptions
+): ExecCodeResult {
+  const { timeLimit } = options;
   try {
     // eslint-disable-next-line
-    const body = Function(attachInfiniteLoopChecker(code))(arg);
+    const body = Function(attachInfiniteLoopChecker(code, timeLimit))(args);
     return { status: "success", body };
   } catch (error) {
     console.error(String(error));
