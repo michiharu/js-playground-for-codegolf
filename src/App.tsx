@@ -53,7 +53,7 @@ const App: React.FC = () => {
       >
         {drawer}
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
+      <Box component="main" sx={{ flexGrow: 1 }}>
         <Toolbar />
         <Switch>
           {pages.map((p) => (
