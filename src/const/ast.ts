@@ -1,51 +1,51 @@
-import * as ESTree from "estree";
+import * as ESTree from 'estree';
 
-export const loopStatements: ESTree.Node["type"][] = [
-  "ForStatement",
-  "DoWhileStatement",
-  "WhileStatement",
-  "ForInStatement",
-  "ForOfStatement",
+export const loopStatements: ESTree.Node['type'][] = [
+  'ForStatement',
+  'DoWhileStatement',
+  'WhileStatement',
+  'ForInStatement',
+  'ForOfStatement',
 ];
 
 export const checkTime = (milliseconds: number): ESTree.Statement => {
   const sec = (milliseconds / 1000).toFixed(2);
   const timeLimitErrorMsg = `TimeLimitError: The execution time has exceeded ${sec} seconds.`;
   return {
-    type: "IfStatement",
+    type: 'IfStatement',
     test: {
-      type: "BinaryExpression",
-      operator: ">",
+      type: 'BinaryExpression',
+      operator: '>',
       left: {
-        type: "BinaryExpression",
-        operator: "-",
+        type: 'BinaryExpression',
+        operator: '-',
         left: {
-          type: "CallExpression",
+          type: 'CallExpression',
           callee: {
-            type: "MemberExpression",
+            type: 'MemberExpression',
             computed: false,
-            object: { type: "Identifier", name: "performance" },
-            property: { type: "Identifier", name: "now" },
+            object: { type: 'Identifier', name: 'performance' },
+            property: { type: 'Identifier', name: 'now' },
             optional: false,
           },
           arguments: [],
           optional: false,
         },
-        right: { type: "Identifier", name: "__start" },
+        right: { type: 'Identifier', name: '__start' },
       },
-      right: { type: "Literal", value: milliseconds, raw: `${milliseconds}` },
+      right: { type: 'Literal', value: milliseconds, raw: `${milliseconds}` },
     },
     consequent: {
-      type: "BlockStatement",
+      type: 'BlockStatement',
       body: [
         {
-          type: "ThrowStatement",
+          type: 'ThrowStatement',
           argument: {
-            type: "CallExpression",
-            callee: { type: "Identifier", name: "Error" },
+            type: 'CallExpression',
+            callee: { type: 'Identifier', name: 'Error' },
             arguments: [
               {
-                type: "Literal",
+                type: 'Literal',
                 value: timeLimitErrorMsg,
                 raw: `"${timeLimitErrorMsg}"`,
               },

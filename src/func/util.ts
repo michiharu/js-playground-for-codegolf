@@ -1,7 +1,6 @@
 import estraverse from 'estraverse';
 import escodegen from 'escodegen';
 import * as ESTree from 'estree';
-// import esprima from 'esprima';
 const esprima = require('esprima');
 
 import { checkTime } from '../const/ast';
