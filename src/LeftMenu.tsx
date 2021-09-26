@@ -1,27 +1,26 @@
-import React from "react";
+import React from 'react';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { pages } from "./routes";
-
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { pages } from './routes';
 
 interface ListItemLinkProps {
-  icon?: React.ReactElement;
   primary: string;
   to: string;
+  icon?: React.ReactElement;
 }
 
 function ListItemLink(props: ListItemLinkProps) {
-  const { icon, primary, to } = props;
+  const { primary, to, icon = undefined } = props;
 
   const renderLink = React.useMemo(
     () =>
-      React.forwardRef<any, Omit<RouterLinkProps, 'to'>>((itemProps, ref) => (
-        <RouterLink to={to} ref={ref} {...itemProps} />
-      )),
-    [to],
+      React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'to'>>(function ForwardingRouterLink(itemProps, ref) {
+        return <RouterLink to={to} ref={ref} {...itemProps} />;
+      }),
+    [to]
   );
 
   return (
@@ -34,15 +33,13 @@ function ListItemLink(props: ListItemLinkProps) {
   );
 }
 
-export default function LeftMenu() {
-  return (
-    <List>
-      {pages.map((p) => {
-        const Icon = p.icon;
-        return (
-          <ListItemLink key={p.page} to={p.page} icon={<Icon />} primary={p.label} />
-        );
-      })}
-    </List>
-  );
-}
+const LeftMenu: React.FC = () => (
+  <List>
+    {pages.map((p) => {
+      const Icon = p.icon;
+      return <ListItemLink key={p.page} to={p.page} icon={<Icon />} primary={p.label} />;
+    })}
+  </List>
+);
+
+export default LeftMenu;

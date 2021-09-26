@@ -1,28 +1,31 @@
-import red from "@material-ui/core/colors/red";
-import { createMuiTheme } from "@material-ui/core/styles";
+import red from '@mui/material/colors/red';
+import createTheme from '@mui/material/styles/createTheme';
 
 // A custom theme for this app
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
-    fontFamily: ['"Courier New"', "Monospace"].join(","),
+    fontSize: 12,
+    fontFamily: ['"Courier New"', 'Monospace'].join(','),
   },
   palette: {
     primary: {
-      main: "#556cd6",
+      main: '#556cd6',
     },
     secondary: {
-      main: "#19857b",
+      main: '#19857b',
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: "#fff",
+      default: '#fff',
     },
   },
-  props: {
+  components: {
     MuiTextField: {
-      variant: "outlined",
+      defaultProps: {
+        variant: 'outlined',
+      },
     },
   },
 });

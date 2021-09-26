@@ -10,7 +10,7 @@ export const initial = `function initialCode() {
         Math.pow(w / 2 - x, 2) + Math.pow((h / 2 - y) * 2, 2)
       );
       if (dstnc < sz) {
-        res += "*";
+        res += "#";
       } else {
         res += "-";
       }
@@ -20,29 +20,3 @@ export const initial = `function initialCode() {
 
   return res;
 }`;
-
-export function original() {
-  // 変数の初期化
-  var res = "";
-  var w = 60;
-  var h = 30;
-  var sz = 24;
-
-  // 処理
-  for (var y = 0; y < h; y++) {
-    for (var x = 0; x < w; x++) {
-      var dstnc = Math.sqrt(
-        Math.pow(w / 2 - x, 2) + Math.pow((h / 2 - y) * 2, 2)
-      );
-      if (dstnc < sz) {
-        res += "*";
-      } else {
-        res += "-";
-      }
-    }
-    res += "\n";
-  }
-
-  // 結果を戻して終了
-  return res;
-}

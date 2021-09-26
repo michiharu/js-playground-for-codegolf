@@ -1,4 +1,5 @@
 # JS Playground for CodeGolf
+JavaScriptでコードゴルフが出来るアプリです。
 
 無限ループによるフリーズ防止機能付きのプレイグラウンド
 

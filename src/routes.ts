@@ -1,34 +1,29 @@
-import { OverridableComponent } from "@material-ui/core/OverridableComponent";
-import { SvgIconTypeMap } from "@material-ui/core/SvgIcon";
-import CircleIcon from "@material-ui/icons/RadioButtonUnchecked";
-import DigitalClockIcon from "@material-ui/icons/Looks3";
-import * as CircleCode from "./codes/circle-code";
-import * as DigitalClock from "./codes/digital-clock-code";
+import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import DigitalClockIcon from '@mui/icons-material/Looks3';
+import * as CircleCode from './codes/circle-code';
+import * as DigitalClock from './codes/digital-clock-code';
+import React from 'react';
 
-export type PageName = "/円を描こう" | "/デジタル時計を描こう";
+export type PageName = '/円を描こう' | '/デジタル時計を描こう';
 
 export type Page = {
   page: PageName;
   label: string;
-  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  icon: React.ComponentType;
   init: string;
-  origin: Function;
 };
 
 export const pages: Page[] = [
   {
-    page: "/円を描こう",
-    label: "円を描こう",
+    page: '/円を描こう',
+    label: '円を描こう',
     icon: CircleIcon,
     init: CircleCode.initial,
-    origin: CircleCode.original,
   },
   {
-    page: "/デジタル時計を描こう",
-    label: "デジタル時計",
+    page: '/デジタル時計を描こう',
+    label: 'デジタル時計',
     icon: DigitalClockIcon,
     init: DigitalClock.initial,
-    origin: DigitalClock.original,
   },
 ];
-// export const digitalClockPage: Page = { page: 'デジタル時計を描こう', icon: DigitalClockIcon };
